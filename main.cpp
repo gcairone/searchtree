@@ -6,7 +6,7 @@
 using namespace std;
 
 //funzioni di utilità
-
+ 
 //stampa matrice qualsiasi
 void print_matrix(const vector<vector<int>> &S) {
     for(int i=0; i<S.size(); i++) {
