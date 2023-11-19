@@ -15,6 +15,18 @@ void print_matrix(const vector<vector<int>> &S) {
     }
 }
 
+//specifica per ticatactoe, prende la matrice con 0, 1, 2 e restituisce la matrice con O  X
+vector<vector<char>> transform_for_print(vector<vector<int>> m) {
+    vector<vector<char>> res(3, std::vector<char>(3, ' '));
+    for(int i=0; i<3; ++i) {
+        for(int j=0; j<3; ++j) {
+            if(m[i][j] == 1) res[i][j] = 'X';
+            if(m[i][j] == 2) res[i][j] = 'O';
+        }
+    }
+    return res;
+}
+
 struct Edge;
 struct Node {
     int status;
@@ -28,12 +40,14 @@ struct Edge {
 };
 
 
+
+
 // Funzione per stampare l'albero generico con indentazioni per chiarezza
 void printTree(Node* node, std::string prefix = "", bool isLast = true) {
     if (node == nullptr)
         return;
 
-    std::cout << prefix;
+    std::cout << prefix << "│   " << endl << prefix;
     if (isLast) {
         std::cout << "└── ";
         prefix += "    ";
@@ -41,8 +55,16 @@ void printTree(Node* node, std::string prefix = "", bool isLast = true) {
         std::cout << "├── ";
         prefix += "│   ";
     }
+    vector<vector<char>> m = transform_for_print(from_int_to_status(node->status));
 
-    cout << node->status << ' ' << ((won(node->status)) ? "won" : "") << endl;
+
+    for(int i=0; i<3; ++i) {
+        for(int j=0; j<3; ++j) {
+            cout << m[i][j] << ' ';
+        }
+        cout << endl;
+        if(i != 2) cout << prefix;
+    }
 
     for (size_t i = 0; i < node->list_moves.size(); ++i) {
         bool last = (i == node->list_moves.size() - 1);
