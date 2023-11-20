@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <fstream>
 #include <cmath>
 #include "search_tree.h"
 using namespace std;
@@ -62,9 +63,11 @@ void printTree(Node* node, std::string prefix = "", bool isLast = true) {
         for(int j=0; j<3; ++j) {
             cout << m[i][j] << ' ';
         }
+        //if(won(node->status) && i==0) cout << " WON";
         cout << endl;
         if(i != 2) cout << prefix;
     }
+    
 
     for (size_t i = 0; i < node->list_moves.size(); ++i) {
         bool last = (i == node->list_moves.size() - 1);
@@ -73,9 +76,7 @@ void printTree(Node* node, std::string prefix = "", bool isLast = true) {
 }
 
 void create_tree(Node* &rad, const int &level) {
-    //cout << "Chiamata " << level << endl;
     if(rad && level > 0) {
-        //cout << "Chiamata" << endl;
         for(int i=1; i<=9; ++i) {
             if(possible(rad->status, i)) {
                 Edge* e = new Edge(i); //crea l'arco mossa
@@ -99,11 +100,16 @@ void create_tree(Node* &rad, const int &level) {
 }
 
 int main() {
-    vector<vector<int>> v = {{0, 0, 2}, {2, 1, 1}, {1, 0, 2}};
+    std::streambuf *coutBuf = std::cout.rdbuf();
+    std::ofstream file("output.txt");
+    std::cout.rdbuf(file.rdbuf());
+
+    vector<vector<int>> v = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
     //auto status_inizio = from_int_to_status(0);
     Node * rad = new Node(from_status_to_int(v));
-    create_tree(rad, 4);
+    create_tree(rad, 10);
     printTree(rad);
+    cout.rdbuf(coutBuf);
 
 }
 
