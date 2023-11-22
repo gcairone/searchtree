@@ -4,6 +4,7 @@
 #include "search_tree.h"
 using namespace std;
 
+vector<int> set_move = {-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 //Prende un intero nell'intervallo [0, 19682] e restituisce lo status
 vector<vector<int>> from_int_to_status(int s) {
     vector<vector<int>> matrix(3, std::vector<int>(3, 0));
@@ -209,4 +210,49 @@ int apply(const int &s, const int &m) {
         }
     }
     return from_status_to_int(res);
+}
+
+//specifica per ticatactoe, prende la matrice con 0, 1, 2 e restituisce la matrice con O  X
+vector<vector<char>> transform_for_print(vector<vector<int>> m) {
+    vector<vector<char>> res(3, std::vector<char>(3, ' '));
+    for(int i=0; i<3; ++i) {
+        for(int j=0; j<3; ++j) {
+            if(m[i][j] == 1) res[i][j] = 'X';
+            if(m[i][j] == 2) res[i][j] = 'O';
+        }
+    }
+    return res;
+}
+
+
+// Funzione per stampare l'albero generico con indentazioni per chiarezza
+void printTree(Node* node, std::string prefix, bool isLast) {
+    if (node == nullptr)
+        return;
+
+    std::cout << prefix << "│   " << endl << prefix;
+    if (isLast) {
+        std::cout << "└── ";
+        prefix += "    ";
+    } else {
+        std::cout << "├── ";
+        prefix += "│   ";
+    }
+    vector<vector<char>> m = transform_for_print(from_int_to_status(node->status));
+
+
+    for(int i=0; i<3; ++i) {
+        for(int j=0; j<3; ++j) {
+            cout << m[i][j] << ' ';
+        }
+        //if(won(node->status) && i==0) cout << " WON";
+        cout << endl;
+        if(i != 2) cout << prefix;
+    }
+    
+
+    for (size_t i = 0; i < node->list_moves.size(); ++i) {
+        bool last = (i == node->list_moves.size() - 1);
+        printTree(node->list_moves[i]->result, prefix, last);
+    }
 }
