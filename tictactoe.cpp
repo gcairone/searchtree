@@ -6,14 +6,14 @@ using namespace std;
 
 vector<int> set_move = {-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 //Prende un intero nell'intervallo [0, 19682] e restituisce lo status
-vector<vector<int>> from_int_to_status(int s) {
+vector<vector<int>> from_int_to_status(long s) {
     vector<vector<int>> matrix(3, std::vector<int>(3, 0));
     vector<int> base3_digits(9, 0);
     if(s>19682 || s<0) {
         vector<vector<int>> err(3, std::vector<int>(3, -1));
         cout << "Not in range" << endl;
         return err;
-    }
+    } 
 
     // Calcola la rappresentazione in base 3 e la inserisce nell'array base3_digits
     for (int i = 8; i >= 0; i--) {
@@ -33,7 +33,7 @@ vector<vector<int>> from_int_to_status(int s) {
     return matrix;
 }
 
-int from_status_to_int(const vector<vector<int>> &s) {
+long from_status_to_int(const vector<vector<int>> &s) {
     int ret = 0;
     if(s.size() != 3 || s[0].size() != 3) {
         cout << "Wrong shape" << endl;
@@ -93,7 +93,7 @@ int from_move_to_int(const vector<vector<int>> &m) {
 //funzioni per manipolare stati e mosse
 //restituisce true se la differenza tra il numero di mosse fatte è sensato
 //restituisce false anche se il numero dato è fuori range
-bool correct(const int &s) {
+bool correct(const long &s) {
     auto status = from_int_to_status(s);
     vector<vector<int>> err(3, std::vector<int>(3, -1));
     if(status == err) {
@@ -114,7 +114,7 @@ bool correct(const int &s) {
 
 //restituisce true se lo status è "vinto"
 //restituisce false se il numero dato è fuori range o se non è "correct"
-bool won(const int &s) {
+bool won(const long &s) {
     //verifichiamo che il numero sia nel range
     auto status = from_int_to_status(s);
     vector<vector<int>> err(3, std::vector<int>(3, -1));
@@ -148,7 +148,7 @@ bool won(const int &s) {
 }
 
 //restituisce true se si può fare la mossa m quando lo status è s
-bool possible(const int &s, const int &m) {
+bool possible(const long &s, const int &m) {
     auto status = from_int_to_status(s);
     auto move = from_int_to_move(m);
     vector<vector<int>> err(3, std::vector<int>(3, -1));
@@ -196,7 +196,7 @@ bool possible(const int &s, const int &m) {
     return true;
 }
 
-int apply(const int &s, const int &m) {
+long apply(const long &s, const int &m) {
     auto status = from_int_to_status(s);
     auto move = from_int_to_move(m);
     vector<vector<int>> res(status);
